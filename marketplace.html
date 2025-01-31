@@ -557,5 +557,210 @@
           openTradeOffersModal(item.id);
         });
 
-        marketplaceGrid.appendChild(car
+        marketplaceGrid.appendChild(card);
+      });
+    }
+
+    // Initial Render
+    renderMarketplace(initialItems);
+
+    /***********************************************************
+     * Add New Listings
+     ***********************************************************/
+    listItemForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const listingType = listingTypeSelect.value;
+      const newId = Date.now();
+      let priceVal = null;
+      let currVal = "";
+
+      if (listingType === "sale") {
+        priceVal = parseFloat(itemPriceInput.value.trim());
+        currVal = itemCurrencySelect.value;
+        if (!priceVal || isNaN(priceVal) || !currVal) {
+          alert("Please enter a valid price and currency for a For Sale listing.");
+          return;
+        }
+      }
+
+      const newItem = {
+        id: newId,
+        name: itemNameInput.value.trim(),
+        price: priceVal,
+        currency: currVal,
+        desc: itemDescInput.value.trim(),
+        image: itemImageInput.value.trim(),
+        listingType
+      };
+
+      if (!newItem.name) {
+        alert("Item name is required.");
+        return;
+      }
+
+      // Add to array
+      initialItems.push(newItem);
+      tradeOffers[newId] = [];
+
+      console.log("New item added:", newItem);
+      // Re-render
+      renderMarketplace(initialItems);
+
+      // Reset the form
+      listItemForm.reset();
+      updatePriceCurrencyVisibility();
+    });
+
+    /***********************************************************
+     * Trade Offers Modal
+     ***********************************************************/
+    let currentItemId = null;
+
+    function openTradeOffersModal(itemId) {
+      currentItemId = itemId;
+      const item = initialItems.find(i => i.id === itemId);
+      modalItemTitle.textContent = `Offers for "${item.name}"`;
+
+      renderTradeOffers(itemId);
+      tradeOffersModal.classList.add("active");
+    }
+
+    function closeModal() {
+      tradeOffersModal.classList.remove("active");
+      currentItemId = null;
+      offerTitleInput.value = "";
+      offerDetailsInput.value = "";
+    }
+    closeModalBtn.addEventListener("click", closeModal);
+
+    /***********************************************************
+     * Render & Handle Trade Offers
+     ***********************************************************/
+    function renderTradeOffers(itemId) {
+      offersList.innerHTML = "";
+      const offers = tradeOffers[itemId] || [];
+
+      if (offers.length === 0) {
+        const noOffers = document.createElement("div");
+        noOffers.textContent = "No trade offers yet.";
+        offersList.appendChild(noOffers);
+      } else {
+        offers.forEach(off => {
+          const offerDiv = document.createElement("div");
+          offerDiv.classList.add("offer-item");
+
+          offerDiv.innerHTML = `
+            <p><strong>Offer:</strong> ${off.title}</p>
+            <p>${off.details}</p>
+            <p><em>Status:</em> ${off.status}</p>
+            <button class="btn-accept">Accept</button>
+            <button class="btn-decline">Decline</button>
+            <button class="btn-chat">Chat</button>
+          `;
+
+          const acceptBtn = offerDiv.querySelector(".btn-accept");
+          const declineBtn = offerDiv.querySelector(".btn-decline");
+          const chatBtn = offerDiv.querySelector(".btn-chat");
+
+          acceptBtn.addEventListener("click", () => {
+            off.status = "Accepted";
+            renderTradeOffers(itemId);
+            alert("You accepted this offer!");
+          });
+          declineBtn.addEventListener("click", () => {
+            off.status = "Declined";
+            renderTradeOffers(itemId);
+            alert("You declined this offer!");
+          });
+
+          // Chat UI
+          const chatContainer = document.createElement("div");
+          chatContainer.classList.add("chat-container");
+
+          function renderChat() {
+            chatContainer.innerHTML = "";
+            off.chat.forEach(msg => {
+              const msgDiv = document.createElement("div");
+              msgDiv.classList.add("chat-message");
+              msgDiv.innerHTML = `<strong>${msg.sender}:</strong> ${msg.message}`;
+              chatContainer.appendChild(msgDiv);
+            });
+          }
+
+          const chatInputWrapper = document.createElement("div");
+          chatInputWrapper.style.marginTop = "0.5rem";
+          chatInputWrapper.innerHTML = `
+            <input type="text" style="width:70%" placeholder="Type your message..." />
+            <button style="width:25%">Send</button>
+          `;
+          const [chatInput, chatSendBtn] = chatInputWrapper.querySelectorAll("input, button");
+
+          chatSendBtn.addEventListener("click", () => {
+            const text = chatInput.value.trim();
+            if (text) {
+              off.chat.push({ sender: "You", message: text });
+              renderChat();
+              chatInput.value = "";
+            }
+          });
+
+          let chatVisible = false;
+          chatBtn.addEventListener("click", () => {
+            chatVisible = !chatVisible;
+            if (chatVisible) {
+              renderChat();
+              offerDiv.appendChild(chatContainer);
+              offerDiv.appendChild(chatInputWrapper);
+            } else {
+              if (offerDiv.contains(chatContainer)) {
+                offerDiv.removeChild(chatContainer);
+                offerDiv.removeChild(chatInputWrapper);
+              }
+            }
+          });
+
+          // Divider after each offer
+          offerDiv.appendChild(document.createElement("hr"));
+          offersList.appendChild(offerDiv);
+        });
+      }
+    }
+
+    // Submit a new trade offer
+    submitOfferBtn.addEventListener("click", () => {
+      if (!currentItemId) return;
+      const title = offerTitleInput.value.trim();
+      const details = offerDetailsInput.value.trim();
+
+      if (!title) {
+        alert("Please enter what you're offering.");
+        return;
+      }
+
+      const newOffer = {
+        itemId: currentItemId,
+        offerId: Date.now(),
+        title,
+        details,
+        status: "Pending",
+        chat: []
+      };
+
+      tradeOffers[currentItemId].push(newOffer);
+      renderTradeOffers(currentItemId);
+      offerTitleInput.value = "";
+      offerDetailsInput.value = "";
+      alert("Your trade offer was submitted!");
+    });
+
+    // Initialize chat arrays
+    Object.keys(tradeOffers).forEach(itemId => {
+      tradeOffers[itemId].forEach(off => {
+        off.chat = off.chat || [];
+      });
+    });
+  </script>
+</body>
+</html>
 
