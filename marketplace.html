@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Marketplace - My Local Marketplace</title>
   <style>
-    /* Basic reset & global styles */
+    /* GLOBAL RESET & BODY */
     * {
       margin: 0;
       padding: 0;
@@ -12,24 +12,27 @@
     }
     body {
       font-family: Arial, sans-serif;
-      background: #f0f2f5;
+      background: #f5fbe9; /* Pale green background */
       color: #333;
     }
+
+    /* HEADER / NAVBAR */
     header {
-      background: #4267b2;
+      background: #8BC34A;
       color: #fff;
       padding: 1rem;
     }
     .navbar {
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
     }
     .navbar h1 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       cursor: pointer;
+      font-weight: bold;
     }
     .navbar .nav-links a {
       color: #fff;
@@ -41,17 +44,18 @@
       text-decoration: underline;
     }
 
+    /* MAIN LAYOUT */
     main {
       display: flex;
       max-width: 1200px;
       margin: 2rem auto;
       gap: 2rem;
+      padding: 0 1rem;
     }
-
-    /* Sidebar (left) for creating listings */
+    /* SIDEBAR - LISTING FORM */
     .sidebar {
       flex: 1;
-      background: #fff;
+      background: #ffffff;
       padding: 1rem;
       border-radius: 0.3rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -59,8 +63,8 @@
     }
     .sidebar h2 {
       margin-bottom: 1rem;
-      font-size: 1.2rem;
-      color: #333;
+      font-size: 1.3rem;
+      color: #33691E;
     }
     .sidebar form {
       display: flex;
@@ -70,10 +74,9 @@
     .sidebar label {
       margin-bottom: 0.25rem;
       font-weight: bold;
+      color: #33691E;
     }
-    .sidebar input,
-    .sidebar textarea,
-    .sidebar select {
+    .sidebar input, .sidebar textarea, .sidebar select {
       width: 100%;
       padding: 0.5rem;
       border: 1px solid #ccc;
@@ -83,20 +86,22 @@
       max-width: 150px;
     }
     .sidebar button {
-      background: #4267b2;
+      background: #7CB342;
       color: #fff;
       font-weight: bold;
       border: none;
-      padding: 0.5rem 1rem;
+      padding: 0.6rem 1rem;
       cursor: pointer;
       border-radius: 0.3rem;
+      transition: background 0.3s;
+      margin-top: 0.5rem;
       align-self: flex-start;
     }
     .sidebar button:hover {
-      background: #36549c;
+      background: #558B2F;
     }
 
-    /* Marketplace grid on the right */
+    /* MARKETPLACE GRID */
     .marketplace {
       flex: 3;
       display: grid;
@@ -133,17 +138,18 @@
       color: #fff;
     }
     .listing-type.sale {
-      background: #28a745; 
+      background: #388E3C; /* darker green */
     }
     .listing-type.wanted {
-      background: #dc3545; 
+      background: #F44336; /* red */
     }
     .listing-type.tradeonly {
-      background: #fd7e14; 
+      background: #FF9800; /* orange */
     }
     .card .content h3 {
       font-size: 1.1rem;
       margin-bottom: 0.25rem;
+      color: #33691E;
     }
     .card .content p {
       font-size: 0.9rem;
@@ -161,7 +167,7 @@
       margin-bottom: 0.5rem;
     }
     .card .footer button {
-      background: #4267b2;
+      background: #7CB342;
       color: #fff;
       font-weight: bold;
       border: none;
@@ -169,15 +175,16 @@
       cursor: pointer;
       border-radius: 0.3rem;
       margin: 0.3rem;
+      transition: background 0.3s;
     }
     .card .footer button:hover {
-      background: #36549c;
+      background: #558B2F;
     }
 
-    /* Modal for trade offers */
+    /* MODAL FOR OFFERS */
     .modal {
       position: fixed;
-      top: 0; left: 0; 
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
       background: rgba(0,0,0,0.5);
@@ -207,6 +214,7 @@
     }
     .modal-header h2 {
       margin-bottom: 0.5rem;
+      color: #33691E;
     }
     .close-btn {
       float: right;
@@ -244,21 +252,31 @@
       border: none;
       border-radius: 0.2rem;
       color: #fff;
+      transition: background 0.3s;
     }
     .offer-item .btn-accept {
-      background: #28a745;
+      background: #4CAF50;
+    }
+    .offer-item .btn-accept:hover {
+      background: #388E3C;
     }
     .offer-item .btn-decline {
-      background: #dc3545;
+      background: #F44336;
+    }
+    .offer-item .btn-decline:hover {
+      background: #D32F2F;
     }
     .offer-item .btn-chat {
-      background: #6c757d;
+      background: #9E9E9E;
       padding: 0.3rem 0.6rem;
       border-radius: 0.2rem;
       margin-left: 0.3rem;
       cursor: pointer;
       border: none;
       color: #fff;
+    }
+    .offer-item .btn-chat:hover {
+      background: #616161;
     }
     .chat-container {
       margin-top: 0.5rem;
@@ -289,16 +307,17 @@
     }
     .trade-offer-form button {
       align-self: flex-start;
-      background: #4267b2;
+      background: #7CB342;
       color: #fff;
       border: none;
       padding: 0.5rem 1rem;
       border-radius: 0.3rem;
       font-weight: bold;
       cursor: pointer;
+      transition: background 0.3s;
     }
     .trade-offer-form button:hover {
-      background: #36549c;
+      background: #558B2F;
     }
     .label-hidden {
       display: none;
@@ -306,6 +325,17 @@
   </style>
 </head>
 <body>
+
+  <!-- HEADER WITH PAYWALL CHECK ON PAGE LOAD -->
+  <script>
+    // Check paywall before anything else
+    window.addEventListener("DOMContentLoaded", () => {
+      const hasPaid = localStorage.getItem("hasPaid");
+      if (hasPaid !== "true") {
+        window.location.href = "index.html";
+      }
+    });
+  </script>
 
   <header>
     <div class="navbar">
@@ -318,23 +348,24 @@
   </header>
 
   <main>
-    <!-- Sidebar: Listing Form -->
+    <!-- SIDEBAR FORM -->
     <div class="sidebar">
       <h2>Create a Listing</h2>
       <form id="listItemForm">
-        <label>Listing Type</label>
+        <label for="listingType">Listing Type</label>
         <select id="listingType" required>
           <option value="sale">For Sale</option>
           <option value="wanted">Wanted</option>
           <option value="tradeOnly">Trade Only</option>
         </select>
 
-        <input type="text" id="itemName" placeholder="Item name" required />
+        <label id="nameLabel" for="itemName">Item Name</label>
+        <input type="text" id="itemName" placeholder="e.g. Fresh Eggs" required />
 
-        <label id="priceLabel">Price</label>
+        <label id="priceLabel" for="itemPrice">Price</label>
         <input type="number" step="0.00000001" min="0" id="itemPrice" placeholder="Price" required />
 
-        <label id="currencyLabel">Currency</label>
+        <label id="currencyLabel" for="itemCurrency">Currency</label>
         <select id="itemCurrency" required>
           <option value="" disabled selected hidden>Select Currency</option>
           <option value="USD">USD</option>
@@ -344,20 +375,23 @@
           <option value="USDC">USDC</option>
         </select>
 
-        <input type="text" id="itemImage" placeholder="Image URL (optional)" />
+        <label for="itemImage">Image URL (optional)</label>
+        <input type="text" id="itemImage" placeholder="https://..." />
+
+        <label for="itemDesc">Description</label>
         <textarea id="itemDesc" rows="3" placeholder="Describe your item..."></textarea>
 
         <button type="submit">List Item</button>
       </form>
     </div>
 
-    <!-- Marketplace Grid -->
+    <!-- MARKETPLACE GRID -->
     <div class="marketplace" id="marketplaceGrid">
-      <!-- Cards inserted by JavaScript -->
+      <!-- Cards inserted dynamically -->
     </div>
   </main>
 
-  <!-- Trade Offers Modal -->
+  <!-- TRADE OFFERS MODAL -->
   <div class="modal" id="tradeOffersModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -373,25 +407,12 @@
           <button id="submitOfferBtn">Submit Offer</button>
         </div>
       </div>
-      <div class="modal-footer"></div>
     </div>
   </div>
 
   <script>
     /***********************************************************
-     * Paywall Check
-     ***********************************************************/
-    // On page load, check if user has "paid" in localStorage
-    window.addEventListener("load", () => {
-      const hasPaid = localStorage.getItem("hasPaid");
-      if (hasPaid !== "true") {
-        // If not paid, send them back to index
-        window.location.href = "index.html";
-      }
-    });
-
-    /***********************************************************
-     * In-Memory Data for Marketplace
+     * Marketplace Data
      ***********************************************************/
     const initialItems = [
       {
@@ -423,7 +444,6 @@
       }
     ];
 
-    // tradeOffers[itemId] -> array of offers
     let tradeOffers = {
       1: [],
       2: [],
@@ -440,8 +460,11 @@
     const itemPriceInput = document.getElementById("itemPrice");
     const currencyLabel = document.getElementById("currencyLabel");
     const itemCurrencySelect = document.getElementById("itemCurrency");
+    const itemNameInput = document.getElementById("itemName");
     const itemImageInput = document.getElementById("itemImage");
     const itemDescInput = document.getElementById("itemDesc");
+
+    // Modal
     const tradeOffersModal = document.getElementById("tradeOffersModal");
     const closeModalBtn = document.getElementById("closeModalBtn");
     const modalItemTitle = document.getElementById("modalItemTitle");
@@ -451,7 +474,7 @@
     const submitOfferBtn = document.getElementById("submitOfferBtn");
 
     /***********************************************************
-     * Show/Hide Price & Currency for "For Sale" Items
+     * Toggle Price/Currency for "sale" Only
      ***********************************************************/
     function updatePriceCurrencyVisibility() {
       const listingType = listingTypeSelect.value;
@@ -478,15 +501,19 @@
      * Render the Marketplace
      ***********************************************************/
     function renderMarketplace(items) {
+      console.log("Rendering marketplace with items:", items);
       marketplaceGrid.innerHTML = "";
+
       items.forEach(item => {
         const card = document.createElement("div");
         card.classList.add("card");
 
+        // Image or placeholder
         const imgSrc = item.image 
-          ? item.image
+          ? item.image 
           : "https://via.placeholder.com/220x150?text=No+Image";
 
+        // Listing type label
         const listingLabel = document.createElement("span");
         listingLabel.classList.add("listing-type");
         if (item.listingType === "sale") {
@@ -500,8 +527,9 @@
           listingLabel.textContent = "TRADE ONLY";
         }
 
+        // Price display
         let priceDisplay = "";
-        if (item.listingType === "sale") {
+        if (item.listingType === "sale" && item.price != null) {
           const priceFormatted = parseFloat(item.price).toFixed(8).replace(/\.?0+$/,"");
           priceDisplay = `${priceFormatted} ${item.currency}`;
         } else if (item.listingType === "wanted") {
@@ -523,192 +551,11 @@
           </div>
         `;
 
+        // Trade button triggers the modal
         const tradeBtn = card.querySelector(".btn-trade");
         tradeBtn.addEventListener("click", () => {
           openTradeOffersModal(item.id);
         });
 
-        marketplaceGrid.appendChild(card);
-      });
-    }
+        marketplaceGrid.appendChild(car
 
-    // Initial render
-    renderMarketplace(initialItems);
-
-    /***********************************************************
-     * Add New Listings
-     ***********************************************************/
-    listItemForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const listingType = listingTypeSelect.value;
-      const newId = Date.now();
-      let priceVal = null;
-      let currVal = "";
-
-      if (listingType === "sale") {
-        priceVal = parseFloat(itemPriceInput.value.trim());
-        currVal = itemCurrencySelect.value;
-        if (!priceVal || isNaN(priceVal) || !currVal) {
-          alert("Please specify a valid price & currency for 'For Sale' listings.");
-          return;
-        }
-      }
-
-      const newItem = {
-        id: newId,
-        name: document.getElementById("itemName").value.trim(),
-        price: priceVal,
-        currency: currVal,
-        desc: itemDescInput.value.trim(),
-        image: itemImageInput.value.trim(),
-        listingType
-      };
-
-      if (!newItem.name) {
-        alert("Please enter an item name.");
-        return;
-      }
-
-      initialItems.push(newItem);
-      tradeOffers[newId] = [];
-
-      renderMarketplace(initialItems);
-      listItemForm.reset();
-      updatePriceCurrencyVisibility();
-    });
-
-    /***********************************************************
-     * Trade Offers Modal
-     ***********************************************************/
-    let currentItemId = null;
-
-    function openTradeOffersModal(itemId) {
-      currentItemId = itemId;
-      const item = initialItems.find(i => i.id === itemId);
-      modalItemTitle.textContent = `Offers for "${item.name}"`;
-      renderTradeOffers(itemId);
-      tradeOffersModal.classList.add("active");
-    }
-
-    function closeModal() {
-      tradeOffersModal.classList.remove("active");
-      currentItemId = null;
-      offerTitleInput.value = "";
-      offerDetailsInput.value = "";
-    }
-    closeModalBtn.addEventListener("click", closeModal);
-
-    /***********************************************************
-     * Rendering & Handling Trade Offers
-     ***********************************************************/
-    function renderTradeOffers(itemId) {
-      offersList.innerHTML = "";
-      const offers = tradeOffers[itemId] || [];
-
-      if (offers.length === 0) {
-        const noOffers = document.createElement("div");
-        noOffers.textContent = "No trade offers yet.";
-        offersList.appendChild(noOffers);
-      } else {
-        offers.forEach(off => {
-          const offerDiv = document.createElement("div");
-          offerDiv.classList.add("offer-item");
-
-          offerDiv.innerHTML = `
-            <p><strong>Offer:</strong> ${off.title}</p>
-            <p>${off.details}</p>
-            <p><em>Status:</em> ${off.status}</p>
-            <button class="btn-accept">Accept</button>
-            <button class="btn-decline">Decline</button>
-            <button class="btn-chat">Chat</button>
-          `;
-
-          const acceptBtn = offerDiv.querySelector(".btn-accept");
-          const declineBtn = offerDiv.querySelector(".btn-decline");
-          const chatBtn = offerDiv.querySelector(".btn-chat");
-
-          acceptBtn.addEventListener("click", () => {
-            off.status = "Accepted";
-            renderTradeOffers(itemId);
-            alert("Offer accepted!");
-          });
-          declineBtn.addEventListener("click", () => {
-            off.status = "Declined";
-            renderTradeOffers(itemId);
-            alert("Offer declined!");
-          });
-
-          // Chat / counter-offer
-          const chatContainer = document.createElement("div");
-          chatContainer.classList.add("chat-container");
-
-          function renderChat() {
-            chatContainer.innerHTML = "";
-            off.chat.forEach(msg => {
-              const msgDiv = document.createElement("div");
-              msgDiv.classList.add("chat-message");
-              msgDiv.innerHTML = `<strong>${msg.sender}:</strong> ${msg.message}`;
-              chatContainer.appendChild(msgDiv);
-            });
-          }
-
-          const chatInputWrapper = document.createElement("div");
-          chatInputWrapper.style.marginTop = "0.5rem";
-          chatInputWrapper.innerHTML = `
-            <input type="text" style="width:70%" placeholder="Type your message..." />
-            <button style="width:25%">Send</button>
-          `;
-          const [chatInput, chatSendBtn] = chatInputWrapper.querySelectorAll("input, button");
-
-          chatSendBtn.addEventListener("click", () => {
-            const text = chatInput.value.trim();
-            if (text) {
-              off.chat.push({ sender: "You", message: text });
-              renderChat();
-              chatInput.value = "";
-            }
-          });
-
-          let chatVisible = false;
-          chatBtn.addEventListener("click", () => {
-            chatVisible = !chatVisible;
-            if (chatVisible) {
-              renderChat();
-              offerDiv.appendChild(chatContainer);
-              offerDiv.appendChild(chatInputWrapper);
-            } else {
-              if (offerDiv.contains(chatContainer)) {
-                offerDiv.removeChild(chatContainer);
-                offerDiv.removeChild(chatInputWrapper);
-              }
-            }
-          });
-
-          offerDiv.appendChild(document.createElement("hr"));
-          offersList.appendChild(offerDiv);
-        });
-      }
-    }
-
-    // Submit new trade offer
-    submitOfferBtn.addEventListener("click", () => {
-      if (!currentItemId) return;
-      const title = offerTitleInput.value.trim();
-      const details = offerDetailsInput.value.trim();
-
-      if (!title) {
-        alert("Enter an offer title!");
-        return;
-      }
-
-      const newOffer = {
-        itemId: currentItemId,
-        offerId: Date.now(),
-        title,
-        details,
-        status: "Pending",
-        chat: []
-      };
-
-      t
